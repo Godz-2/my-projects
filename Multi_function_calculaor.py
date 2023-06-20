@@ -1,3 +1,5 @@
+import statistics
+
 import sympy
 import math
 from sympy import *
@@ -7,6 +9,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import sys
+from colorama import *
+from statistics import *
 
 
 # Functions For Linear Equations Solving
@@ -18,7 +22,7 @@ def linear_equation_solving(number_variables):
         eq = Eq(sympify(equation), 0)
         equations.append(eq)
     print("\n")
-    text = "Calculating..."
+    text = Fore.RED + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -38,7 +42,7 @@ def quadritic():
     eq_1 = Eq(sympify(eq), 0)
     sol = solve(eq_1)
     print("\n")
-    text = "Calculating..."
+    text = Fore.GREEN + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -56,7 +60,7 @@ def cubic():
     eq_1 = Eq(sympify(eq), 0)
     sol = solve(eq_1)
     print("\n")
-    text = "Calculating..."
+    text = Fore.CYAN + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -73,7 +77,7 @@ def bi_quad():
     eq_1 = Eq(sympify(eq), 0)
     sol = solve(eq_1)
     print("\n")
-    text = "Calculating..."
+    text = Fore.LIGHTBLUE_EX + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -92,9 +96,10 @@ def derivative():
     x = symbols('x')
     f = input("Enter Your Function: ")
     f_1 = sympify(f)
-    df = sympy.diff(f_1, x)
+    n = int(input("order of derivative: "))
+    df = sympy.diff(f_1, x, n)
     print("\n")
-    text = "Calculating..."
+    text = Fore.MAGENTA + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -102,18 +107,20 @@ def derivative():
     sys.stdout.flush()
     print("\n")
     print("The Derivative is = ", df)
+    print("\n")
 
 
 def derivative_at_point():
     x = symbols('x')
     f = input("Enter Your Function: ")
     f_1 = sympify(f)
-    df = sympy.diff(f_1, x)
+    n = int(input("order of derivative: "))
+    df = sympy.diff(f_1, x, n)
     print("The Derivative is = ", df)
     c = float(input("Enter The Point, x = "))
     point = df.subs(x, c)
     print("\n")
-    text = "Calculating..."
+    text = Fore.CYAN + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -129,7 +136,7 @@ def indefinite_integrate():
     f_1 = sympify(f)
     inT = sympy.integrate(f_1, x)
     print("\n")
-    text = "Calculating..."
+    text = Fore.BLUE + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -143,11 +150,11 @@ def definite_integration():
     x = symbols('x')
     f = input("Enter the Function: ")
     f_1 = sympify(f)
-    print("# NOTE For infinite Limit use oo or -oo")
-    c = float(input("Enter the Lower limit: "))
-    c1 = float(input("Enter the upper limit: "))
+    print(Fore.RED + "# NOTE For infinite Limit use oo or -oo" + Style.BRIGHT)
+    c = float(input(Fore.GREEN + "Enter the Lower limit: " + Style.BRIGHT))
+    c1 = float(input(Fore.GREEN + "Enter the upper limit: " + Style.BRIGHT))
     print("\n")
-    text = "Calculating..."
+    text = Fore.BLUE + "Calculating..." + Style.RESET_ALL
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -165,7 +172,7 @@ def lim():
     b = float(input("Enter The Evaluation Point or Limiting Point: "))
     lim_result = limit(f, variables, b)
     print("\n")
-    text = "Calculating..."
+    text = Fore.GREEN + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -181,7 +188,7 @@ def lim():
 def factorial():
     num = int(input("Enter The Number: "))
     print("\n")
-    text = "Calculating..."
+    text = Fore.LIGHTBLUE_EX + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -195,7 +202,7 @@ def nth_root():
     n = float(input("Enter The Number: "))
     p = float(input("Enter nth Root: "))
     print("\n")
-    text = "Calculating..."
+    text = Fore.GREEN + "Calculating..." + Style.BRIGHT
     sys.stdout.write(text)
     sys.stdout.flush()
     time.sleep(2.0)
@@ -211,34 +218,48 @@ def nth_root():
 def plot():
     plt.xlabel('X-Axis')
     plt.ylabel('Y-Axis')
-    plt.title('Graph')
-    plt.grid(True)
-    f = input("Enter The Function To Plot, f(x) =  ")
-    f1 = sympify(f)
-    x = np.arange(-3 * np.pi, 3 * np.pi, 0.01)
-    y = [f1.subs('x', val) for val in x]
-    plt.plot(x, y, label=f1, color='orange')
+    plt.title('Graph-Plot')
+    f = input(Fore.LIGHTRED_EX + "Enter The Function To Plot in Graph, f(x) = y =  " + Style.RESET_ALL)
+    y = sympify(f)
+
+    xmin = -10
+    xmax = 10
+    ymin = -10
+    ymax = 10
+
+    points = 100 * (xmax - xmin)
+    x = np.linspace(xmin, xmax, points)
+    plt.axis([xmin, xmax, ymin, ymax])
+    plt.plot([xmin, xmax], [0, 0], 'b')
+    plt.plot([0, 0], [ymin, ymax], 'b')
+    y_values = [y.subs('x', xi) for xi in x]
+    plt.plot(x, y_values, label=y, color='orange')
     plt.legend()
+    plt.grid(True)
     plt.show()
 
-print("Write Multiplication in * Form And\nPower In ** Form\n")
+
+print(Fore.RED + "INSTRUCTIONS\n" + Style.BRIGHT)
+print(Fore.RED + "Write Multiplication in * Form And Power In ** Form\n" + Style.RESET_ALL)
 print("\n")
-print("----------------------------------------------------------------------")
+print(Fore.LIGHTBLUE_EX + "----------------------------------------------------------------------" + Style.BRIGHT)
 if __name__ == '__main__':
     while True:
         print(
-            "Press 1 For Linear Equation Solving (Upto 4 Variables)\nPress 2 For Roots Of Polynomial (Upto Bi-Quadritic)\nPress 3 For Calculus\nPress 4 For Graph Plotting\nPress 5 For Misc\n0 for quit")
+            Fore.BLUE + "Press 1 For Linear Equation Solving (Upto 4 Variables)\nPress 2 For Roots Of Polynomial (Upto Bi-Quadritic)\nPress 3 For Calculus\nPress 4 For Graph Plotting\nPress 5 For Misc\nPress 6 For Central Tendency)\n0 for quit" + Style.RESET_ALL)
         print()
-        user = int(input("Which Type Of Operation Do You Want To Do\n"))
-        print("------------------------------------------------#----------------------------------------------")
+        user = int(input(Fore.LIGHTGREEN_EX + "Which Type Of Operation Do You Want To Do\n" + Style.BRIGHT))
+        print(
+            Fore.LIGHTGREEN_EX + "------------------------------------------------#----------------------------------------------" + Style.RESET_ALL)
         print("\n")
 
         if user == 1:
-            number = int(input("Enter The No of Variables: "))
+            number = int(input(Fore.LIGHTYELLOW_EX + "Enter The No of Variables: " + Style.BRIGHT))
             linear_equation_solving(number)
             print("\n")
         elif user == 2:
-            user_1 = int(input("Press 1 For Quadritic\nPress 2 For Cubic\nPress 3 Bi-Quadritic\n"))
+            user_1 = int(input(
+                Fore.LIGHTYELLOW_EX + "Press 1 For Roots of Quadritic\nPress 2 For Roots of Cubic\nPress 3 for Roots Bi-Quadritic\n" + Style.BRIGHT))
             if user_1 == 1:
                 quadritic()
             elif user_1 == 2:
@@ -251,7 +272,7 @@ if __name__ == '__main__':
             print("\n")
         elif user == 3:
             user_1 = int(input(
-                "Press 1 For Differentiation\nPress 2 For Derivative Value at a Given Point\nPress 3 For Indefinite Integration\nPress 4 For Definite Integration\nPress 5 For Limit Evaluation\n"))
+                Fore.CYAN + "Press 1 For Differentiation\nPress 2 For Derivative Value at a Given Point\nPress 3 For Indefinite Integration\nPress 4 For Definite Integration\nPress 5 For Limit Evaluation\n" + Style.BRIGHT))
             if user_1 == 1:
                 derivative()
             elif user_1 == 2:
@@ -268,7 +289,8 @@ if __name__ == '__main__':
         elif user == 4:
             plot()
         elif user == 5:
-            user_1 = int(input("Enter The Operation\n1 For Factorial Calculation\n2 For nth Root Calculation\n"))
+            user_1 = int(input(
+                Fore.GREEN + "Enter The Operation\n1 For Factorial Calculation\n2 For nth Root Calculation\n" + Style.BRIGHT))
             print("\n")
             if user_1 == 1:
                 factorial()
@@ -276,7 +298,47 @@ if __name__ == '__main__':
                 nth_root()
             else:
                 print("Invalid Input! Try Again\n")
+        elif user == 6:
+            user_1 = int(input(Fore.BLUE + "Press 1 For Mean\nPress 2 For Median\nPress 3 For Mode\n" + Style.BRIGHT))
+            print("\n")
+            try:
+                if user_1 == 1:
+                    l = []
+                    obs = int(input("Enter The Number Of Observation: "))
+                    print(Fore.LIGHTYELLOW_EX + "Enter The Observations\n" + Style.RESET_ALL)
+                    for i in range(obs):
+                        a = int(input())
+                        l.append(float(a))
+
+                    print("\n")
+                    print(Fore.GREEN + "The Mean is = " + Style.BRIGHT, statistics.mean(l))
+                    print("\n")
+                elif user_1 == 2:
+                    m = []
+                    obs = int(input("Enter The Number Of Observation: "))
+                    print(Fore.LIGHTYELLOW_EX + "Enter The Observations\n" + Style.RESET_ALL)
+                    for i in range(obs):
+                        a = int(input())
+                        m.append(float(a))
+
+                    print("\n")
+                    print(Fore.LIGHTRED_EX + "The Median Is = " + Style.BRIGHT, statistics.median(l))
+                    print("\n")
+                elif user_1 == 3:
+                    n = []
+                    obs = int(input("Enter The Number Of Observation: "))
+                    print(Fore.LIGHTYELLOW_EX + "Enter The Observations\n" + Style.RESET_ALL)
+                    for i in range(obs):
+                        a = int(input())
+                        n.append(int(a))
+
+                    print("\n")
+                    print(Fore.CYAN + "The Mode Is = " + Style.BRIGHT, statistics.mode(l))
+                    print("\n")
+            except:
+                print("Invalid Input!\n")
+
         elif user == 0:
             break
 
-    print("Thank You!\n")
+    print((Fore.LIGHTBLUE_EX + "THANK YOU FOR USING!\n" + Style.BRIGHT))
